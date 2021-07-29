@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template, jsonify, request 
+from flask import Flask, render_template, jsonify, request
+from sqlalchemy.sql.operators import exists 
 from .models import setup_db, Actor, Movie
 from .auth.auth import AuthError, requires_auth 
 from flask_cors import CORS
-from werkzeug.exceptions import Unauthorized, BadRequest, NotFound
+from werkzeug.exceptions import Unauthorized, BadRequest, NotFound 
 
 def create_app(test_config=None):
 
@@ -22,11 +23,6 @@ def create_app(test_config=None):
 app = create_app()
 
 @app.route('/')
-def get_greeting():
-    greeting = "Hello" 
-    return greeting
-
-@app.route('/login', methods=['GET','POST'])
 def index():
     return render_template("login.html")
 
@@ -74,7 +70,33 @@ def insert_actor(self):
     except Exception:
         raise Unauthorized()
 
-    
+@app.route('/actors/<int:id>', methods=['PATCH'])
+@requires_auth('updated:actors')
+def update_actor(id):
+    try:
+        actor = Actor.query.filter(Actor.id == id).first()
+        if actor is None:
+            return NotFound()
+        body = request.get_json()
+        actor = Actor()
+        if body['name'] is not None:
+            actor.name= body['name']
+
+        if body['gender'] is not None:
+            actor.gender= body['gender']
+        actor.update()
+        update_actor = Actor.query.filter(Actor.id == id).first()
+        if update_actor is None:
+            return NotFound()
+        else:
+            response = {
+                    'success': True,
+                    'status_code': 200,
+                    'actor_updated' : update_actor.format()
+                    }
+            return jsonify(response)
+    except Exception:
+        raise Unauthorized()
 
 #----------------------------------------------------------------------------#
 # /movies API
@@ -113,6 +135,34 @@ def insert_movies(self):
                 'movie' : movie.format()
                 }
         return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
+@app.route('/movies/<int:id>', methods=['PATCH'])
+@requires_auth('updated:movies')
+def update_movie(id):
+    try:
+        movie = Movie.query.filter(Movie.id == id).first()
+        if movie is None:
+            return NotFound()
+        body = request.get_json()
+        movie = Movie()
+        if body['title'] is not None:
+            movie.title= body['title']
+
+        if body['release_date'] is not None:
+            movie.release_date= body['release_date']
+        movie.update()
+        update_movie = Movie.query.filter(Movie.id == id).first()
+        if update_movie is None:
+            return NotFound()
+        else:
+            response = {
+                    'success': True,
+                    'status_code': 200,
+                    'movie_updated' : update_movie.format()
+                    }
+            return jsonify(response)
     except Exception:
         raise Unauthorized()
 
