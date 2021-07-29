@@ -202,5 +202,48 @@ def delete_movie(id):
     except Exception:
         raise Unauthorized()
 
+# Error Handling
+
+@app.errorhandler(400)
+def bad_request(error):
+     return jsonify({
+       "success" : False,
+       "error" : 400 ,
+       "message" : "bad request "
+     }) ,400
+
+@app.errorhandler(422)
+def unprocessable(error):
+    return jsonify({
+        "success": False,
+        "error": 422,
+        "message": "unprocessable"
+    }), 422
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "Resource not found"
+        }), 404
+
+@app.errorhandler(401)
+def Unauthorized_client(error):
+    return jsonify({
+        "success": False,
+        "error": 401,
+        "message": "Unauthorized client status"
+        }), 401
+
+@app.errorhandler(405)
+def method_not_found(error):
+     return jsonify({
+       "success" : False,
+       "error" : 405 ,
+       "message" : "Method not found "
+     }) ,405
+
 if __name__ == '__main__':
     app.run()
