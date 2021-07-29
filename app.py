@@ -98,8 +98,8 @@ def update_actor(payload, id):
         raise Unauthorized()
 
 @app.route('/actor/<int:id>', methods=['DELETE'])
-@requires_auth('delete:actor')
-def delete_actor(id):
+@requires_auth('delete:actors')
+def delete_actor(payload,id):
     try:
         selected_actor=Actor.query.get(id)
         if selected_actor is None:
@@ -186,7 +186,7 @@ def update_movie(payload,id):
 
 @app.route('/movies/<int:id>', methods=['DELETE'])
 @requires_auth('delete:movies')
-def delete_movie(id):
+def delete_movie(payload,id):
     try:
         selected_movie=Movie.query.get(id)
         if selected_movie is None:
