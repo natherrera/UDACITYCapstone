@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify 
+from flask import Flask, render_template, jsonify, request 
 from .models import setup_db, Actor, Movie
 from .auth.auth import AuthError, requires_auth 
 from flask_cors import CORS
@@ -56,6 +56,26 @@ def get_actors(payload):
     except Exception:
         raise Unauthorized()
 
+@app.route('/actors', methods=['POST'])
+@requires_auth('post:actors')
+def insert_actor(self): 
+    try:
+        body = request.get_json()
+        actor = Actor()
+        actor.name= body['name']
+        actor.gender= body['gender']
+        actor.insert()
+        response = {
+                'success': True,
+                'status_code': 200,
+                'actor' : actor.format()
+                }
+        return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
+    
+
 #----------------------------------------------------------------------------#
 # /movies API
 #----------------------------------------------------------------------------#
@@ -75,6 +95,24 @@ def get_movies(payload):
             'movies' : movies ,
             }
             return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
+@app.route('/movies', methods=['POST'])
+@requires_auth('post:movies')
+def insert_movies(self): 
+    try:
+        body = request.get_json()
+        movie = Movie()
+        movie.title= body['title']
+        movie.release_date= body['release_date']
+        movie.insert()
+        response = {
+                'success': True,
+                'status_code': 200,
+                'movie' : movie.format()
+                }
+        return jsonify(response)
     except Exception:
         raise Unauthorized()
 
