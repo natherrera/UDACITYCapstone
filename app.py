@@ -71,19 +71,18 @@ def insert_actor(self):
         raise Unauthorized()
 
 @app.route('/actors/<int:id>', methods=['PATCH'])
-@requires_auth('updated:actors')
-def update_actor(id):
+@requires_auth('update:actors')
+def update_actor(payload, id):
     try:
         actor = Actor.query.filter(Actor.id == id).first()
         if actor is None:
             return NotFound()
         body = request.get_json()
         actor = Actor()
-        if body['name'] is not None:
-            actor.name= body['name']
-
-        if body['gender'] is not None:
-            actor.gender= body['gender']
+        if body.get('name', actor.name) is not None:
+            actor.name= body.get('name', actor.name)
+        if body.get('gender', actor.gender) is not None:
+            actor.gender= body.get('gender', actor.gender)
         actor.update()
         update_actor = Actor.query.filter(Actor.id == id).first()
         if update_actor is None:
@@ -95,7 +94,7 @@ def update_actor(id):
                     'actor_updated' : update_actor.format()
                     }
             return jsonify(response)
-    except Exception:
+    except Exception as E:
         raise Unauthorized()
 
 @app.route('/actor/<int:id>', methods=['DELETE'])
@@ -157,19 +156,19 @@ def insert_movies(self):
         raise Unauthorized()
 
 @app.route('/movies/<int:id>', methods=['PATCH'])
-@requires_auth('updated:movies')
-def update_movie(id):
+@requires_auth('update:movies')
+def update_movie(payload,id):
     try:
         movie = Movie.query.filter(Movie.id == id).first()
         if movie is None:
             return NotFound()
         body = request.get_json()
         movie = Movie()
-        if body['title'] is not None:
-            movie.title= body['title']
+        if body.get('title', movie.title) is not None:
+            movie.title= body.get('title', movie.title)
 
-        if body['release_date'] is not None:
-            movie.release_date= body['release_date']
+        if body.get('release_date', movie.release_date) is not None:
+            movie.release_date= body.get('release_date', movie.release_date)
         movie.update()
         update_movie = Movie.query.filter(Movie.id == id).first()
         if update_movie is None:
@@ -181,7 +180,8 @@ def update_movie(id):
                     'movie_updated' : update_movie.format()
                     }
             return jsonify(response)
-    except Exception:
+    except Exception as E:
+        print(E)
         raise Unauthorized()
 
 @app.route('/movies/<int:id>', methods=['DELETE'])
