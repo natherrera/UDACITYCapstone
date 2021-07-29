@@ -98,6 +98,24 @@ def update_actor(id):
     except Exception:
         raise Unauthorized()
 
+@app.route('/actor/<int:id>', methods=['DELETE'])
+@requires_auth('delete:actor')
+def delete_actor(id):
+    try:
+        selected_actor=Actor.query.get(id)
+        if selected_actor is None:
+            return NotFound()
+        selected_actor.delete()
+
+        response = {
+                'success': True,
+                'status_code': 200,
+                'deleted_actor_id' : id
+                }
+        return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
 #----------------------------------------------------------------------------#
 # /movies API
 #----------------------------------------------------------------------------#
@@ -163,6 +181,24 @@ def update_movie(id):
                     'movie_updated' : update_movie.format()
                     }
             return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
+@app.route('/movies/<int:id>', methods=['DELETE'])
+@requires_auth('delete:movies')
+def delete_movie(id):
+    try:
+        selected_movie=Movie.query.get(id)
+        if selected_movie is None:
+            return NotFound()
+        selected_movie.delete()
+
+        response = {
+                'success': True,
+                'status_code': 200,
+                'deleted_movie_id' : id
+                }
+        return jsonify(response)
     except Exception:
         raise Unauthorized()
 
