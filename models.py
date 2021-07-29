@@ -2,12 +2,11 @@ from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-db_path = "postgres://cvjivdnclvyjog:51ec8c20289b6e35d453eaab45da55b45d17787a20d3748679c5394b25a4fb9c@ec2-34-233-114-40.compute-1.amazonaws.com:5432/dechcibns75qiv"
+db_path = "postgresql://cvjivdnclvyjog:51ec8c20289b6e35d453eaab45da55b45d17787a20d3748679c5394b25a4fb9c@ec2-34-233-114-40.compute-1.amazonaws.com:5432/dechcibns75qiv"
 db = SQLAlchemy()
 
 
 def setup_db(app, database_path=db_path):
-    app.config.from_object('config')
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app

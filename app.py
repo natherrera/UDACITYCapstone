@@ -7,9 +7,9 @@ from flask_cors import CORS
 from werkzeug.exceptions import Unauthorized, BadRequest, NotFound 
 
 def create_app(test_config=None):
-
     app = Flask(__name__,template_folder='./templates')
     CORS(app)
+    setup_db(app)
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     @app.after_request
