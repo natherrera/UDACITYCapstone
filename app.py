@@ -1,10 +1,9 @@
-import os
 from flask import Flask, render_template, jsonify, request
 from sqlalchemy.sql.operators import exists 
 from models import setup_db, Actor, Movie
 from auth.auth import AuthError, requires_auth 
 from flask_cors import CORS
-from werkzeug.exceptions import Unauthorized, BadRequest, NotFound 
+from werkzeug.exceptions import Unauthorized, NotFound 
 
 def create_app(test_config=None):
     app = Flask(__name__,template_folder='./templates')

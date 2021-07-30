@@ -4,8 +4,7 @@ ecdsa==0.13.2
 Flask==1.0.2
 Flask-Cors==3.0.8
 Flask-SQLAlchemy==2.4.0
-Flask_Script==2.0.6
-Flask_Migrate==2.5.3
+Flask-Migrate==2.6.0
 future==0.17.1
 greenlet==1.1.0
 isort==4.3.18
