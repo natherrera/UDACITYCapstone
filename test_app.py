@@ -31,16 +31,16 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['success'])
 
 
-#     #Testing POST create actor.
-#     def test_create_new_actor_as_executive_producer_200(self):
-#         actor = {
-#             'name' : 'Quentin',
-#             'gender': 'Male',
-#         } 
-#         res = self.client().post('/actors', json = actor, headers = {'Authorization' : self.executive_producer_token})
-#         data = json.loads(res.data)
-#         self.assertEqual(res.status_code, 200)
-#         self.assertTrue(data['success'])
+    #Testing POST create actor.
+    def test_create_new_actor_as_executive_producer_200(self):
+        actor = {
+            'name' : 'Quentin',
+            'gender': 'Male',
+        } 
+        res = self.client().post('/actors', json = actor, headers = {'Authorization' : self.executive_producer_token})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
 
 #     #Testing PATCH update actor
 #     def test_update_actor_as_executive_producer_200(self):
