@@ -8,6 +8,7 @@ Flask-Migrate==2.6.0
 Flask_Script==2.0.6
 future==0.17.1
 greenlet==1.1.0
+gunicorn==19.0.0
 isort==4.3.18
 itsdangerous==1.1.0
 Jinja2==2.10.1
