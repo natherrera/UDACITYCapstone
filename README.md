@@ -1,6 +1,9 @@
-# Capstone Project
+# Capstone Project - Motivation for project
 
-Casting App its a API who provides endpoints for adding, removing, editing and searching for movies and actors.  It implements authentication with Auth0 and RBAC with 3 tiers of authorization.
+This is the latest project of the Fullstack nanograduate, an API that is based on the management of a casting agency. Based on roles, and functionalities, which through Auth0 secures all the information traffic. I feel very excited to be able to finish it.
+
+Url: `% https://nherreracapstone.herokuapp.com/ `
+
 ### Starts
 
 0. Requires Python 3.5 or higher.
@@ -335,36 +338,3 @@ DELETE | /movie/:id | Producer/Director
     "success": true
 }
 ```
-
-
-
-#### Errors
-Erros will return json with an error description, name and status code.
-
-Example:
-```
-% curl -H $AUTHORIZED_HEADER 'http://127.0.0.1:5000/actors?age=enlightenment'
-```
-Response
-```
-{
-  "description": "Malformed age range",
-  "name": "Unprocessable Entity",
-  "status_code": 422,
-  "success": false
-}
-```
-```
-% curl -H 'Authorization: Bearer just-sneaking-in' 'http://127.0.0.1:5000/actors'
-```
-Response
-```
-{
-  "description": "Authorization malformed.",
-  "name": "invalid_header",
-  "status_code": 401,
-  "success": false
-}
-```
-
-[\(back to the top\)](#API-Reference)
