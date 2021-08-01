@@ -2,7 +2,7 @@
 
 This is the latest project of the Fullstack nanograduate, an API that is based on the management of a casting agency. Based on roles, and functionalities, which through Auth0 secures all the information traffic. I feel very excited to be able to finish it.
 
-Url: `% https://nherreracapstone.herokuapp.com/ `
+URL: `% https://nherreracapstone.herokuapp.com/ `
 
 ### Starts
 
