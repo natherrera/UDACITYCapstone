@@ -3,7 +3,7 @@ from sqlalchemy.sql.operators import exists
 from models.models import setup_db, Actor, Movie
 from auth.auth import AuthError, requires_auth 
 from flask_cors import CORS
-from werkzeug.exceptions import Unauthorized, NotFound 
+from werkzeug.exceptions import BadRequest, Unauthorized, NotFound 
 
 def create_app(test_config=None):
     app = Flask(__name__,template_folder='./templates')
@@ -51,6 +51,23 @@ def get_actors(payload):
     except Exception:
         raise Unauthorized()
 
+@app.route('/actors/<int:id>', methods=['GET'])
+@requires_auth('view:actors')
+def get_actor(payload, id):
+    try:
+        actor = Actor.query.filter(Actor.id == id).first()
+        if actor is None:
+            return NotFound()
+        else:
+            response = {
+            'success': True,
+            'status_code': 200,
+            'actor' : actor.format() ,
+            }
+            return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
 @app.route('/actors', methods=['POST'])
 @requires_auth('post:actors')
 def insert_actor(self): 
@@ -73,6 +90,8 @@ def insert_actor(self):
 @requires_auth('update:actors')
 def update_actor(payload, id):
     try:
+        if id is None:
+            return BadRequest()
         actor = Actor.query.filter(Actor.id == id).first()
         if actor is None:
             return NotFound()
@@ -96,7 +115,7 @@ def update_actor(payload, id):
     except Exception as E:
         raise Unauthorized()
 
-@app.route('/actor/<int:id>', methods=['DELETE'])
+@app.route('/actors/<int:id>', methods=['DELETE'])
 @requires_auth('delete:actors')
 def delete_actor(payload,id):
     try:
@@ -136,6 +155,23 @@ def get_movies(payload):
     except Exception:
         raise Unauthorized()
 
+@app.route('/movies/<int:id>', methods=['GET'])
+@requires_auth('view:movies')
+def get_movie(payload, id):
+    try:
+        movie = Movie.query.filter(Movie.id == id).first()
+        if movie is None:
+            return NotFound()
+        else:
+            response = {
+            'success': True,
+            'status_code': 200,
+            'movie' : movie.format() ,
+            }
+            return jsonify(response)
+    except Exception:
+        raise Unauthorized()
+
 @app.route('/movies', methods=['POST'])
 @requires_auth('post:movies')
 def insert_movies(self): 
@@ -158,6 +194,8 @@ def insert_movies(self):
 @requires_auth('update:movies')
 def update_movie(payload,id):
     try:
+        if id is None:
+            return BadRequest()
         movie = Movie.query.filter(Movie.id == id).first()
         if movie is None:
             return NotFound()
